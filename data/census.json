@@ -168,6 +168,67 @@
       "count": 0,
       "samples": [],
       "mfresh": 0.95
+    },
+    "soho_closure": {
+      "name": "소상공인 폐업·정리",
+      "hunch": 0.8,
+      "count": 0,
+      "samples": [],
+      "mfresh": 0.95
+    },
+    "disability_access": {
+      "name": "장애인 이동·접근성",
+      "hunch": 0.8,
+      "count": 4,
+      "samples": [
+        "Norra",
+        "Avo",
+        "Trexo Robotics",
+        "Sunu"
+      ],
+      "mfresh": 0.55
+    },
+    "caregiver_support": {
+      "name": "환자 보호자·간병 지원",
+      "hunch": 0.75,
+      "count": 7,
+      "samples": [
+        "Cova",
+        "Scheduling Wizard",
+        "TakeCareOS",
+        "Evergrove"
+      ],
+      "mfresh": 0.42
+    },
+    "sidejob_worker": {
+      "name": "직장인 부업·사이드잡",
+      "hunch": 0.65,
+      "count": 5,
+      "samples": [
+        "Synphony",
+        "Misprint",
+        "BiteSight",
+        "MarketForce"
+      ],
+      "mfresh": 0.5
+    },
+    "small_landlord": {
+      "name": "소규모 임대·건물 관리",
+      "hunch": 0.6,
+      "count": 1,
+      "samples": [
+        "Trigo"
+      ],
+      "mfresh": 0.81
+    },
+    "craft_seller": {
+      "name": "수제·공예 창작자 판매",
+      "hunch": 0.6,
+      "count": 1,
+      "samples": [
+        "Haywheel"
+      ],
+      "mfresh": 0.81
     }
   }
 }
