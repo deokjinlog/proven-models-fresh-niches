@@ -1,0 +1,173 @@
+{
+  "corpus": "YC companies (api.ycombinator.com/v0.1)",
+  "corpus_size": 6175,
+  "fetched": "2026-08-21",
+  "note": "count=이 니치에 이미 영업 중인 회사 수(영어 키워드 매칭 하한). mfresh=log 역스케일 신선도.",
+  "niches": {
+    "pet_funeral": {
+      "name": "반려동물 장례",
+      "hunch": 0.85,
+      "count": 0,
+      "samples": [],
+      "mfresh": 0.95
+    },
+    "freelance_tax": {
+      "name": "프리랜서 세무·정산",
+      "hunch": 0.7,
+      "count": 4,
+      "samples": [
+        "IronLedger.ai",
+        "noHQ",
+        "Pretty Instant",
+        "Payable"
+      ],
+      "mfresh": 0.55
+    },
+    "solo_mfg": {
+      "name": "1인 제조업(스마트공장 미만)",
+      "hunch": 0.8,
+      "count": 4,
+      "samples": [
+        "Shiraz AI",
+        "HERA",
+        "Optifye.ai",
+        "Proglix"
+      ],
+      "mfresh": 0.55
+    },
+    "special_ed": {
+      "name": "특수교육 학부모",
+      "hunch": 0.85,
+      "count": 8,
+      "samples": [
+        "Exin Therapeutics",
+        "Verse Therapy",
+        "Finni Health",
+        "Joon Health"
+      ],
+      "mfresh": 0.39
+    },
+    "local_smb_mkt": {
+      "name": "동네 소상공인 마케팅",
+      "hunch": 0.6,
+      "count": 7,
+      "samples": [
+        "TryNearby",
+        "Moreta",
+        "Lovage",
+        "Flextock"
+      ],
+      "mfresh": 0.42
+    },
+    "midlife_job": {
+      "name": "중장년 재취업",
+      "hunch": 0.75,
+      "count": 6,
+      "samples": [
+        "Turing College",
+        "Able",
+        "AccioJob",
+        "Nestor"
+      ],
+      "mfresh": 0.46
+    },
+    "plant_care": {
+      "name": "반려식물 케어",
+      "hunch": 0.8,
+      "count": 2,
+      "samples": [
+        "Neverland",
+        "Edyn"
+      ],
+      "mfresh": 0.7
+    },
+    "creator_tax": {
+      "name": "크리에이터 정산·세금",
+      "hunch": 0.8,
+      "count": 9,
+      "samples": [
+        "Venue.ink",
+        "Top Road",
+        "Argo",
+        "Dots 💸"
+      ],
+      "mfresh": 0.36
+    },
+    "immigrant_admin": {
+      "name": "이민자·유학생 행정",
+      "hunch": 0.85,
+      "count": 27,
+      "samples": [
+        "Veeza AI",
+        "LegalOS",
+        "Mayflower",
+        "Ruvo"
+      ],
+      "mfresh": 0.1
+    },
+    "used_baby": {
+      "name": "중고 유아용품 순환",
+      "hunch": 0.7,
+      "count": 1,
+      "samples": [
+        "Mystery.org"
+      ],
+      "mfresh": 0.81
+    },
+    "farm_direct": {
+      "name": "소규모 농가 직거래",
+      "hunch": 0.7,
+      "count": 4,
+      "samples": [
+        "farmtheory",
+        "Four Growers",
+        "Farmstead",
+        "Kisan Network"
+      ],
+      "mfresh": 0.55
+    },
+    "senior_digital": {
+      "name": "시니어 디지털 돌봄",
+      "hunch": 0.85,
+      "count": 19,
+      "samples": [
+        "Cova",
+        "Morphik",
+        "Moonset Health",
+        "Oma Care"
+      ],
+      "mfresh": 0.17
+    },
+    "home_repair": {
+      "name": "동네 수리기사(집수리)",
+      "hunch": 0.75,
+      "count": 36,
+      "samples": [
+        "Vestris",
+        "Bernard",
+        "Kebra",
+        "CentralComs"
+      ],
+      "mfresh": 0.1
+    },
+    "indie_shop": {
+      "name": "독립서점·로컬상점",
+      "hunch": 0.7,
+      "count": 9,
+      "samples": [
+        "Peeba",
+        "Gonddo",
+        "borong",
+        "matagora"
+      ],
+      "mfresh": 0.36
+    },
+    "amateur_league": {
+      "name": "아마추어 스포츠 리그",
+      "hunch": 0.8,
+      "count": 0,
+      "samples": [],
+      "mfresh": 0.95
+    }
+  }
+}
