@@ -1,0 +1,180 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>제품 아이디어 발굴기</title>
+<style>
+  :root{
+    --stage:#0b1016; --panel:#131b23; --panel2:#1a242e;
+    --ink:#eaf1f5; --muted:#8a9aa6; --faint:#586773;
+    --proven:#f6b23c; --fresh:#2dd4a7; --good:#54e0a0; --line:#1f2c37; --line2:#2c3d4a;
+    --sans:"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,-apple-system,sans-serif;
+    --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--stage);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  .wrap{max-width:880px;margin:0 auto;padding:34px 20px 90px;}
+  code{font-family:var(--mono);font-size:.88em;background:#0a0f14;border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--fresh);}
+  b{color:#fff;}
+  .kicker{font:800 11.5px var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--fresh);margin:0 0 10px;}
+  h1{font-size:clamp(27px,6.4vw,42px);line-height:1.1;margin:0 0 14px;letter-spacing:-.01em;}
+  .lead{font-size:15px;color:var(--muted);margin:0 0 4px;} .lead b{color:var(--ink);}
+  .lead .hp{color:var(--proven);font-weight:700;} .lead .hf{color:var(--fresh);font-weight:700;}
+
+  .picklbl{font:700 12px var(--sans);letter-spacing:.04em;color:var(--faint);margin:24px 0 12px;}
+  .picker{display:flex;flex-wrap:wrap;gap:7px;}
+  .chip{border:1px solid var(--line2);background:var(--panel);color:var(--muted);border-radius:999px;padding:7px 13px;font:600 13px var(--sans);cursor:pointer;transition:.14s;}
+  .chip:hover{border-color:var(--fresh);color:var(--ink);}
+  .chip[aria-pressed="true"]{background:var(--fresh);color:#062018;border-color:var(--fresh);font-weight:800;}
+  .chip.deep{border-color:var(--proven);box-shadow:0 0 0 1px var(--proven) inset;color:var(--ink);}
+  .chip.deep[aria-pressed="true"]{box-shadow:none;background:var(--fresh);}
+  .deephint{font-size:.82em;color:var(--proven);font-weight:700;margin-left:8px;}
+
+  .setline{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;margin:26px 0 8px;}
+  .setname{font-size:23px;font-weight:800;} .setgloss{font-size:13px;color:var(--muted);}
+  .affords{font-size:12.5px;color:var(--faint);margin-bottom:14px;}
+  .btag{display:inline-block;border:1px solid var(--line2);border-radius:7px;padding:2px 8px;margin:2px 3px 2px 0;font:600 11.5px var(--mono);color:var(--muted);}
+
+  .top{border:1px solid var(--line2);border-radius:16px;background:linear-gradient(180deg,var(--panel),#0e151b);padding:20px;margin-top:4px;}
+  .toptag{display:inline-block;background:var(--fresh);color:#062018;font:800 11px var(--sans);letter-spacing:.05em;border-radius:6px;padding:3px 9px;}
+  .top h2{font-size:23px;margin:11px 0 2px;} .top .engine{color:var(--muted);font-size:14px;font-weight:500;}
+  .bars{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:16px 0 6px;}
+  @media(max-width:560px){.bars{grid-template-columns:1fr;}}
+  .bar .bk{display:flex;justify-content:space-between;font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:6px;}
+  .bar .bk b{color:var(--ink);font-size:13px;}
+  .track{height:6px;background:#0a0f14;border-radius:4px;overflow:hidden;}
+  .fill{height:100%;border-radius:4px;} .f-prov{background:var(--proven);} .f-fresh{background:var(--fresh);} .f-fit{background:var(--good);}
+  .humansum{margin:14px 0;padding:12px 15px;border-radius:11px;background:linear-gradient(180deg,rgba(45,212,167,.09),transparent);border:1px solid #1e4a3d;font-size:14.5px;line-height:1.62;}
+  .humansum b{color:var(--fresh);font-weight:800;} .hs-h{font-weight:800;color:var(--fresh);margin-right:5px;} .hs-d{color:var(--muted);font-size:.86em;}
+  .metlbl{font:800 10.5px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:16px 0 6px;}
+  .metrics div{font-size:13px;color:var(--muted);margin:5px 0;} .metrics .mk{display:inline-block;min-width:40px;font:800 10px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);}
+  .met{color:var(--good);border:1px solid #2a4a3a;border-radius:6px;padding:1px 7px;font-size:12px;margin-right:5px;font-family:var(--mono);}
+  .dim{color:var(--faint);}
+
+  .packet{border:1px solid var(--line);border-radius:14px;background:var(--panel);margin-top:14px;overflow:hidden;}
+  .pk-h{padding:13px 18px;font:800 12px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--proven);border-bottom:1px solid var(--line);}
+  .pk-h .tag{color:var(--faint);font-weight:600;letter-spacing:0;text-transform:none;margin-left:8px;font-size:11px;}
+  .pk-row{display:grid;grid-template-columns:76px 1fr;gap:14px;padding:13px 18px;border-bottom:1px solid var(--line);}
+  .pk-row:last-child{border-bottom:0;} .pk-k{font:700 12px var(--sans);color:var(--faint);}
+  .pk-row p{margin:0;font-size:14.5px;line-height:1.7;} .pk-comp{color:var(--fresh);font-weight:700;}
+  .pk-note{margin:0;font-size:13.5px;color:var(--muted);line-height:1.72;padding:14px 18px;}
+
+  .ranklbl{font:700 12px var(--sans);color:var(--faint);margin:26px 0 10px;}
+  .row{display:grid;grid-template-columns:26px 1fr 92px;gap:12px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:11px;margin-bottom:8px;}
+  .row .num{font:800 14px var(--mono);color:var(--faint);} .row .rn{font-weight:700;} .row .re{color:var(--muted);font-size:12.5px;}
+  .rbar{height:4px;border-radius:3px;background:#0a0f14;margin-top:7px;overflow:hidden;max-width:280px;} .rfill{height:100%;background:var(--proven);}
+  .row .sc{text-align:right;} .row .sc b{font-size:18px;color:var(--proven);} .row .sc .lab{display:block;font-size:11px;color:var(--faint);}
+  .row.miss{opacity:.5;} .row.miss .sc b{color:var(--faint);font-size:13px;}
+  .note{margin-top:24px;font-size:12.5px;color:var(--faint);border-left:2px solid var(--line2);padding-left:13px;line-height:1.7;}
+  .foot{margin-top:30px;font-size:12px;color:var(--faint);}
+</style>
+
+<div class="wrap">
+  <p class="kicker">proven-models × fresh-niches · 아이디어 발굴 엔진</p>
+  <h1>검증된 구조, 안 써본 시장</h1>
+  <p class="lead"><b>"참신한 사업 아이디어"는 대개 둘 중 하나로 망한다 — 검증 안 된 구조거나, 이미 붉은 바다거나.</b></p>
+  <p class="lead">이 도구는 <span class="hp">여러 번 성공한 비즈니스 구조</span>를 <span class="hf">아직 아무도 제대로 안 판 니치</span>에 얹어, <b>될 만하면서 비어있는</b> 조합을 코드가 결정적으로 찾는다. 매칭은 취향 0(<code>구조 요구 ⊆ 니치 조건</code>), 점수 = 검증도 × 니치 신선도.</p>
+  <p class="lead" style="font-size:13px;margin-top:8px;color:var(--faint)">※ <b style="color:var(--proven)">classic-bones-modern-fusion</b>(고전 이야기 뼈대)·design-explosion(디자인 스타일)과 <b>같은 엔진</b>의 3번째 도메인 — "검증된 구조 × 신선한 맥락"은 재사용 가능한 방법이다.</p>
+
+  <p class="picklbl">니치 고르기 · <span id="nn"></span> <span class="deephint">★ 깊이 완성 사례 — 먼저</span></p>
+  <div class="picker" id="picker"></div>
+  <div id="result"></div>
+
+  <div class="note">이건 투자 판단이 아니라 <b>발상 도구</b>다. 검증도(proven)=이 구조를 쓴 성공 사례 수(참고치), 신선도=이 니치의 미개척 추정, 양립=니치가 그 구조의 조건을 충족하는지(결정적). 진짜 검증은 고객 인터뷰·실측이 한다 — 여기선 "될 만한 빈칸"만 조준한다.</div>
+  <p class="foot">구조는 데이터로 고르고, 실행은 사람이 한다.</p>
+</div>
+
+<script>
+const COND={B1:"분절된 공급(파편화된 공급자)",B2:"분절된 수요(흩어진 고객)",B3:"신뢰·검증 문제",B4:"반복 니즈(주기적 재사용)",B5:"즉시성(지금 당장)",B6:"유휴 자산·공급",B7:"발견·선택 어려움",B8:"산업별 워크플로 비효율(수기·엑셀)",B9:"네트워크·UGC 여지",B10:"소모품·락인",B11:"전문성·규제 장벽",B12:"데이터 축적 루프"};
+const MODEL={
+ mkt:{name:"마켓플레이스",engine:"분절된 공급과 수요를 한 판에서 중개",req:["B1","B2"],proven:9,ex:"에어비앤비·당근·크몽"},
+ ond:{name:"온디맨드",engine:"즉시 필요를 유휴 공급에 실시간 매칭",req:["B5","B6"],proven:8,ex:"우버·배민·쏘카"},
+ vsaas:{name:"수직 SaaS",engine:"한 산업의 수기 업무를 전용 툴로",req:["B8","B11"],proven:8,ex:"토스트(식당)·병원EMR·로톡"},
+ sub:{name:"구독",engine:"반복 니즈를 정기 과금+락인으로",req:["B4","B10"],proven:8,ex:"넷플릭스·밀리·쿠팡와우"},
+ agg:{name:"애그리게이터",engine:"파편화된 공급을 검증·표준화해 브랜드화",req:["B1","B3"],proven:7,ex:"호텔스컴바인·청소연구소"},
+ free:{name:"프리미엄(Freemium)",engine:"무료로 네트워크 깔고 반복 가치에 과금",req:["B4","B9"],proven:7,ex:"노션·슬랙·피그마"},
+ comm:{name:"커뮤니티 주도",engine:"신뢰·콘텐츠를 사용자에게서, 발견을 또래로",req:["B9","B7"],proven:6,ex:"레딧·오늘의집·블라인드"},
+ broker:{name:"전문서비스 중개",engine:"검증된 전문가를 신뢰 문제 있는 수요에",req:["B3","B11"],proven:7,ex:"삼쩜삼·강남언니·숨고"},
+ cura:{name:"큐레이션·롱테일",engine:"방대한 선택지를 취향으로 좁혀줌",req:["B7","B4"],proven:6,ex:"스포티파이·오늘의집"},
+ flywheel:{name:"데이터 플라이휠",engine:"쓸수록 쌓인 데이터가 서비스를 개선",req:["B12","B8"],proven:6,ex:"추천엔진·신용평가"},
+ p2p:{name:"P2P 대여·리셀",engine:"유휴 자산을 소유 대신 접근으로",req:["B6","B2"],proven:6,ex:"번개장터·쏘카·트렌비"},
+ d2c:{name:"D2C 언번들",engine:"중간상 걷어내고 신뢰·소모품을 직거래",req:["B3","B10"],proven:6,ex:"달러쉐이브·와비파커"}
+};
+const NICHE={
+ pet_funeral:{name:"반려동물 장례",gloss:"파편화·불투명·감정재",affords:["B1","B3","B5"],fresh:.85},
+ freelance_tax:{name:"프리랜서 세무·정산",gloss:"수기·전문성·반복",affords:["B8","B11","B4","B3"],fresh:.7},
+ solo_mfg:{name:"1인 제조업(스마트공장 미만)",gloss:"엑셀·파편·데이터부재",affords:["B8","B12","B1"],fresh:.8},
+ special_ed:{name:"특수교육 학부모",gloss:"정보난·또래필요·전문성",affords:["B7","B9","B3","B11"],fresh:.85},
+ local_smb_mkt:{name:"동네 소상공인 마케팅",gloss:"수기·발견난·흩어진수요",affords:["B8","B7","B2"],fresh:.6},
+ midlife_job:{name:"중장년 재취업",gloss:"흩어진수요·발견난·불신",affords:["B2","B7","B3"],fresh:.75},
+ plant_care:{name:"반려식물 케어",gloss:"선택난·반복·커뮤니티",affords:["B7","B4","B9"],fresh:.8},
+ creator_tax:{name:"크리에이터 정산·세금",gloss:"수기·전문성·반복",affords:["B8","B11","B4"],fresh:.8},
+ immigrant_admin:{name:"이민자·유학생 행정",gloss:"규제·불신·정보난·즉시",affords:["B11","B3","B7","B5"],fresh:.85},
+ used_baby:{name:"중고 유아용품 순환",gloss:"유휴자산·흩어진수요·불신",affords:["B6","B2","B3"],fresh:.7},
+ farm_direct:{name:"소규모 농가 직거래",gloss:"파편공급·흩어진수요·불신",affords:["B1","B2","B3"],fresh:.7},
+ senior_digital:{name:"시니어 디지털 돌봄",gloss:"즉시·불신·반복",affords:["B5","B3","B4"],fresh:.85},
+ home_repair:{name:"동네 수리기사(집수리)",gloss:"파편·불신·즉시·유휴",affords:["B1","B3","B5","B6"],fresh:.75},
+ indie_shop:{name:"독립서점·로컬상점",gloss:"발견난·커뮤니티·흩어진수요",affords:["B7","B9","B2"],fresh:.7},
+ amateur_league:{name:"아마추어 스포츠 리그",gloss:"네트워크·발견난·흩어진수요",affords:["B9","B7","B2"],fresh:.8}
+};
+const DEEP={
+ pet_funeral:{thesis:"파편화되고 불투명한 반려동물 장례업체를 검증·가격표준화해 한 곳에서 예약. '믿을 곳'이 없다는 게 유일한 진짜 페인.",comp:"호텔스컴바인 for 반려동물 장례",why:"애그리게이터는 '파편+불신' 시장에서 반복 검증됨. 반려인구 1,500만인데 장례 규격·신뢰 인프라가 사실상 없다 — 될 만하고, 비어있다.",risk:"저빈도(평생 몇 번)라 재구매가 약함 → 반려 라이프사이클(추모·유품·다음 입양)로 LTV 확장 필요."},
+ freelance_tax:{thesis:"프리랜서·N잡러의 세무를 업종별로 특화한 전용 SaaS. 삼쩜삼이 '환급'만 훑는 지점을, 계속 쓰는 '장부-정산-절세'로 깊게.",comp:"삼쩜삼 + QuickBooks의 수직 버전",why:"수직 SaaS는 '수기+전문성' 산업에서 강력. 프리랜서 700만 시대에 종합 정산 툴이 얕다 — 반복 니즈라 구독 전환도 자연.",risk:"세무 책임·규제 리스크 → 세무사 제휴로 '툴+검수' 하이브리드."},
+ special_ed:{thesis:"특수교육 학부모의 검증된 정보 + 같은 처지 부모 커뮤니티. 흩어진 정보와 고립이 핵심 페인이라, 신뢰는 또래에서 나온다.",comp:"오늘의집의 신뢰 구조 × 특수교육",why:"커뮤니티 주도는 '발견난+네트워크' 시장에서 반복됨. 감정적 몰입이 높은 세그먼트라 UGC·리텐션이 강하게 붙는다.",risk:"수익화가 늦음 → 검증된 치료·교구 커머스/중개를 커뮤니티 위에 얹기."},
+ immigrant_admin:{thesis:"이민자·유학생의 비자·행정을 검증된 행정사/변호사와 즉시 매칭. 규제·불신·정보난·즉시성이 다 겹친 고통.",comp:"숨고 × LegalZoom for 체류행정",why:"전문서비스 중개는 '규제+불신' 시장에서 반복됨. 언어·정보 비대칭이 커서 중개 가치가 크고, 아직 파편화돼 있다.",risk:"국가·비자별 규정 파편화 → 처음엔 한 국가·한 비자 유형으로 좁혀 앵커."},
+ creator_tax:{thesis:"크리에이터의 플랫폼별 수입(유튜브·후원·협찬)을 자동 집계·정산·세무. 수입원이 흩어져 수기 관리가 지옥인 게 페인.",comp:"토스 for 크리에이터 정산",why:"수직 SaaS는 '수기+전문성+반복' 삼박자에 최적. 크리에이터 경제 급성장인데 정산 인프라가 개인 엑셀 수준이다.",risk:"플랫폼 API 의존 → 영수증·스크린샷 파싱 폴백 + 세무사 제휴."}
+};
+const DEEPKEYS=["pet_funeral","freelance_tax","special_ed","immigrant_admin","creator_tax"];
+const MAXPROVEN=Math.max(...Object.values(MODEL).map(m=>m.proven)), NM=Object.keys(MODEL).length;
+const cname=c=>COND[c]||c;
+function rows(aff){return Object.keys(MODEL).map(k=>{const m=MODEL[k],met=m.req.filter(c=>aff.includes(c)),miss=m.req.filter(c=>!aff.includes(c));return{k,name:m.name,engine:m.engine,req:m.req,met,miss,fit:met.length===m.req.length,proven:m.proven,ex:m.ex};}).sort((a,b)=>(b.fit-a.fit)||(b.proven-a.proven));}
+function render(nk){
+  const N=NICHE[nk], aff=N.affords, rs=rows(aff), fits=rs.filter(r=>r.fit), top=fits[0];
+  const affh=aff.map(c=>`<span class="btag">${c} ${cname(c)}</span>`).join("");
+  let h=`<div class="setline"><span class="setname">${N.name}</span><span class="setgloss">${N.gloss}</span></div>
+    <div class="affords">니치 조건 ${aff.length} · ${affh}</div>`;
+  if(top){
+    const score=(top.proven*N.fresh).toFixed(1);
+    const prov = top.proven>=8?'가장 검증된':top.proven>=6?'여러 번 성공한':'쓰인 적 있는';
+    const frsh = N.fresh>=.8?'거의 안 파인':N.fresh>=.65?'덜 파인':'제법 붐비는';
+    const metchips=top.req.map(c=>`<span class="met">✓ ${c} ${cname(c)}</span>`).join("");
+    h+=`<div class="top"><span class="toptag">1등 구조</span>
+      <h2>${top.name} <span class="engine">— ${top.engine}</span></h2>
+      <div class="bars">
+        <div class="bar"><div class="bk"><span>검증 proven</span><b>${top.proven}</b></div><div class="track"><div class="fill f-prov" style="width:${Math.round(top.proven/MAXPROVEN*100)}%"></div></div></div>
+        <div class="bar"><div class="bk"><span>신선 fresh</span><b>${Math.round(N.fresh*100)}%</b></div><div class="track"><div class="fill f-fresh" style="width:${Math.round(N.fresh*100)}%"></div></div></div>
+        <div class="bar"><div class="bk"><span>양립 fit</span><b>${top.met.length}/${top.req.length}</b></div><div class="track"><div class="fill f-fit" style="width:${Math.round(top.met.length/top.req.length*100)}%"></div></div></div>
+      </div>
+      <div class="humansum"><span class="hs-h">👁 한눈에</span> <b>${prov}</b> 구조를, <b>${N.name}</b>라는 <b>${frsh}</b> 시장에 얹었다. <span class="hs-d">될 만하면서(검증), 비어있다(신선).</span></div>
+      <div class="metlbl">근거 상세 — 숫자로</div>
+      <div class="metrics">
+        <div><span class="mk">검증</span> <code>proven ${top.proven}/${MAXPROVEN}</code> · 이 구조를 쓴 성공 사례: <b>${top.ex}</b></div>
+        <div><span class="mk">양립</span> ${metchips} <span class="dim">— 니치가 이 구조의 조건을 다 충족</span></div>
+        <div><span class="mk">신선</span> 이 니치 미개척 추정 <code>${Math.round(N.fresh*100)}%</code> <span class="dim">(붐빌수록 낮음)</span></div>
+        <div><span class="mk">점수</span> <code>검증 ${top.proven} × 신선 ${N.fresh} = ${score}</code></div>
+      </div></div>`;
+    const dp=DEEP[nk];
+    if(dp){ h+=`<div class="packet"><div class="pk-h">아이디어 패킷 <span class="tag">★ 완성 사례</span></div>
+      <div class="pk-row"><span class="pk-k">가설</span><p>${dp.thesis}</p></div>
+      <div class="pk-row"><span class="pk-k">comp</span><p class="pk-comp">${dp.comp}</p></div>
+      <div class="pk-row"><span class="pk-k">왜 되나</span><p>${dp.why}</p></div>
+      <div class="pk-row"><span class="pk-k">리스크</span><p>${dp.risk}</p></div></div>`; }
+    else { h+=`<div class="packet"><div class="pk-h">아이디어 패킷 <span class="tag">씨앗</span></div>
+      <p class="pk-note">여기까지 — <b>구조 매칭·근거는 결정적으로</b> 끝났다. 이 조합의 가설·GTM·리스크는 <b>사람이 고객 인터뷰로</b> 채운다. ★ 표시 니치엔 완성 사례가 있다.</p></div>`; }
+  } else {
+    h+=`<div class="top"><p style="margin:0;color:var(--muted)">이 니치 조건으로 <b>완전 양립하는 검증 구조가 없음</b> — 조건을 더 좁히거나, 아래 근접 구조를 참고.</p></div>`;
+  }
+  h+=`<p class="ranklbl">양립 ${fits.length} · 근접 ${rs.length-fits.length}</p>`;
+  fits.forEach((r,i)=>{const sc=(r.proven*N.fresh).toFixed(1);
+    h+=`<div class="row"><span class="num">${i+1}</span><span><span class="rn">${r.name}</span> <span class="re">· ${r.engine}</span><div class="rbar"><div class="rfill" style="width:${Math.round(r.proven/MAXPROVEN*100)}%"></div></div></span><span class="sc"><b>${sc}</b><span class="lab">검증×신선</span></span></div>`;});
+  rs.filter(r=>!r.fit).slice(0,4).forEach(r=>{h+=`<div class="row miss"><span class="num">—</span><span><span class="rn">${r.name}</span> <span class="re">· 조건 ${r.miss.map(cname).slice(0,2).join(" · ")} 부족</span></span><span class="sc"><b>근접</b><span class="lab">보강 시</span></span></div>`;});
+  document.getElementById("result").innerHTML=h;
+  [...document.querySelectorAll(".chip")].forEach(c=>c.setAttribute("aria-pressed",c.dataset.k===nk));
+}
+(function(){
+  document.getElementById("nn").textContent=Object.keys(NICHE).length;
+  const p=document.getElementById("picker");
+  Object.keys(NICHE).forEach(k=>{const b=document.createElement("button");const d=DEEPKEYS.includes(k);
+    b.className="chip"+(d?" deep":"");b.dataset.k=k;b.textContent=(d?"★ ":"")+NICHE[k].name;b.setAttribute("aria-pressed","false");
+    b.onclick=()=>render(k);p.appendChild(b);});
+  render("pet_funeral");
+})();
+</script>
