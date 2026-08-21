@@ -82,6 +82,7 @@
   <p class="foot">구조는 데이터로 고르고, 실행은 사람이 한다.</p>
 </div>
 
+<script src="./engine.js"></script>
 <script>
 const COND={B1:"분절된 공급(파편화된 공급자)",B2:"분절된 수요(흩어진 고객)",B3:"신뢰·검증 문제",B4:"반복 니즈(주기적 재사용)",B5:"즉시성(지금 당장)",B6:"유휴 자산·공급",B7:"발견·선택 어려움",B8:"산업별 워크플로 비효율(수기·엑셀)",B9:"네트워크·UGC 여지",B10:"소모품·락인",B11:"전문성·규제 장벽",B12:"데이터 축적 루프"};
 const MODEL={
@@ -128,14 +129,15 @@ const DEEP={
 const DEEPKEYS=["pet_funeral","amateur_league","freelance_tax","special_ed","creator_tax","immigrant_admin"];
 const MAXPROVEN=Math.max(...Object.values(MODEL).map(m=>m.proven)), NM=Object.keys(MODEL).length;
 const cname=c=>COND[c]||c;
-function rows(aff){return Object.keys(MODEL).map(k=>{const m=MODEL[k],met=m.req.filter(c=>aff.includes(c)),miss=m.req.filter(c=>!aff.includes(c));return{k,name:m.name,engine:m.engine,req:m.req,met,miss,fit:met.length===m.req.length,proven:m.proven,ex:m.ex};}).sort((a,b)=>(b.fit-a.fit)||(b.proven-a.proven));}
+// 매칭·점수·순위 = engine.js(도메인 불변, classic-bones와 byte-identical). 여기선 모델 필드로 매핑만.
+function rows(aff,fresh){return Engine.rank(Object.keys(MODEL),aff,{req:k=>MODEL[k].req,proven:k=>MODEL[k].proven,fresh:()=>fresh}).map(r=>{const m=MODEL[r.item];return{k:r.item,name:m.name,engine:m.engine,req:m.req,met:r.met,miss:r.miss,fit:r.fit,proven:m.proven,ex:m.ex,score:r.score};});}
 function render(nk){
-  const N=NICHE[nk], aff=N.affords, rs=rows(aff), fits=rs.filter(r=>r.fit), top=fits[0];
+  const N=NICHE[nk], aff=N.affords, rs=rows(aff,N.fresh), fits=rs.filter(r=>r.fit), top=fits[0];
   const affh=aff.map(c=>`<span class="btag">${c} ${cname(c)}</span>`).join("");
   let h=`<div class="setline"><span class="setname">${N.name}</span><span class="setgloss">${N.gloss}</span></div>
     <div class="affords">니치 조건 ${aff.length} · ${affh}</div>`;
   if(top){
-    const score=(top.proven*N.fresh).toFixed(1);
+    const score=top.score.toFixed(1);
     const prov = top.proven>=8?'가장 검증된':top.proven>=6?'여러 번 성공한':'쓰인 적 있는';
     const frsh = N.fresh>=.8?'거의 안 파인':N.fresh>=.65?'덜 파인':'제법 붐비는';
     const metchips=top.req.map(c=>`<span class="met">✓ ${c} ${cname(c)}</span>`).join("");
@@ -166,7 +168,7 @@ function render(nk){
     h+=`<div class="top"><p style="margin:0;color:var(--muted)">이 니치 조건으로 <b>완전 양립하는 검증 구조가 없음</b> — 조건을 더 좁히거나, 아래 근접 구조를 참고.</p></div>`;
   }
   h+=`<p class="ranklbl">양립 ${fits.length} · 근접 ${rs.length-fits.length}</p>`;
-  fits.forEach((r,i)=>{const sc=(r.proven*N.fresh).toFixed(1);
+  fits.forEach((r,i)=>{const sc=r.score.toFixed(1);
     h+=`<div class="row"><span class="num">${i+1}</span><span><span class="rn">${r.name}</span> <span class="re">· ${r.engine}</span><div class="rbar"><div class="rfill" style="width:${Math.round(r.proven/MAXPROVEN*100)}%"></div></div></span><span class="sc"><b>${sc}</b><span class="lab">검증×신선</span></span></div>`;});
   rs.filter(r=>!r.fit).slice(0,4).forEach(r=>{h+=`<div class="row miss"><span class="num">—</span><span><span class="rn">${r.name}</span> <span class="re">· 조건 ${r.miss.map(cname).slice(0,2).join(" · ")} 부족</span></span><span class="sc"><b>근접</b><span class="lab">보강 시</span></span></div>`;});
   document.getElementById("result").innerHTML=h;
