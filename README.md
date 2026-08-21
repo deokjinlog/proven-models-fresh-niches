@@ -42,7 +42,7 @@ story 도메인이 WikiPlots 11만편에서 배경 등장수를 세듯([classic-
 | 경로 | 내용 |
 |---|---|
 | `index.html` | 아이디어 엔진 (조건 B1–B12 · 구조 12 · 니치 15 · 딥 패킷 6, `engine.js` 로드) |
-| `engine.js` · `engine.test.js` | 도메인 불변 매칭 엔진 — 요구 ⊆ 보유 · `score = proven × fresh` · 순위. `classic-bones-modern-fusion`과 **byte-identical**(canonical은 거기, 여기선 사본). `node engine.test.js`로 17개 불변식 검증 |
+| `engine.js` · `engine.test.js` · `verify-engine.sh` · `engine.sha256` | 도메인 불변 매칭 엔진 — 요구 ⊆ 보유 · `score = proven × fresh` · 순위. `classic-bones-modern-fusion`과 **byte-identical**(canonical은 거기, 여기선 사본). `bash verify-engine.sh` = 해시 고정 + 17개 불변식 게이트(사본이 어긋나면 실패) |
 | `framework.html` | "하나의 엔진, 세 번 증명" 포폴 허브 |
 | `src/census.py` | YC ~6,200개사에서 니치별 혼잡도 실측 → 신선도. `data/census.json`(감사)·`data/niche_block.js`(index.html용 NICHE 리터럴) 생성 |
 | `data/census.json` | 코퍼스 크기·니치별 count·샘플 회사명 (재현·검수용) |
